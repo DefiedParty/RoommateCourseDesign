@@ -1,645 +1,679 @@
 #include <iostream>
 #include <stdlib.h>
-#include <string>
+#include <string.h>
 using namespace std;
 
 class Student;
 
 class StuNode
 {
-  public:
-    Student* head;
-    Student* tail;
-    int num;
+public:
+  Student *head;
+  Student *tail;
+  int num;
 };
 
 class Student
 {
-   private:
-	   int num;
-	   char name[10];
-	   char major[10];
-	   char clas[10];
-	   int math_sc;
-	   int English_sc;
-	   int C_sc;
-   public:
-      friend class StuFun;
-	  Student* creat_stu();
-	  Student* next;
+private:
+  int num;
+  char name[10];
+  char major[10];
+  char clas[10];
+  int math_sc;
+  int English_sc;
+  int C_sc;
+
+public:
+  friend class StuFun;
+  Student *creat_stu();
+  Student *next;
 };
 
-class StuFun:public Student
+class StuFun : public Student
 {
-   public:
-      int Add_info(StuNode* list,Student* node);
-	  int find_mod(StuNode* list,int flag);
-	  int aver_jg_yx(StuNode* list);
-	  int All_aver_max_min(StuNode* list);
-	  int pm(StuNode* list);
-	  int deleteStu(StuNode* list);
-	  int show(StuNode* list);
-	  int Free_Node(StuNode* list);
-	  int Read_File(StuNode* list);  
+public:
+  int Add_info(StuNode *list, Student *node);
+  int find_mod(StuNode *list, int flag);
+  int aver_jg_yx(StuNode *list);
+  int All_aver_max_min(StuNode *list);
+  int pm(StuNode *list);
+  int deleteStu(StuNode *list);
+  int show(StuNode *list);
+  int Free_Node(StuNode *list);
+  int Read_File(StuNode *list);
 };
 
-StuNode* creat_node(StuNode* list)
+StuNode *creat_node(StuNode *list)
 {
-    if(list)
+  if (list)
     return NULL;
-    list=(StuNode*)malloc(sizeof(class StuNode));
-    list->head=NULL;
-    list->tail=NULL;
-    list->num=0;
-    return list;
+  list = (StuNode *)malloc(sizeof(class StuNode));
+  list->head = NULL;
+  list->tail = NULL;
+  list->num = 0;
+  return list;
 }
 
-Student* Student::creat_stu()
+Student *Student::creat_stu()
 {
-   Student* node=(Student*)malloc(sizeof(class Student));
-   if(!node)
-  return NULL;
-   cout<<"\tÑ§ºÅ£º";
-   cin>>node->num;
+  Student *node = (Student *)malloc(sizeof(class Student));
+  if (!node)
+    return NULL;
+  cout << "\tå­¦å·ï¼š";
+  cin >> node->num;
 
-   cout<<"\tĞÕÃû£º";
-   cin>>node->name;
+  cout << "\tå§“åï¼š";
+  cin >> node->name;
 
-   cout<<"\tÏµ±ğ£º";
-   cin>>node->major;
+  cout << "\tç³»åˆ«ï¼š";
+  cin >> node->major;
 
-   cout<<"\t°à¼¶£º";
-   cin>>node->clas;
+  cout << "\tç­çº§ï¼š";
+  cin >> node->clas;
 
-   cout<<"\t¸ßÊı·ÖÊı£º";
-   cin>>node->math_sc;
- 
-   cout<<"\tÓ¢Óï·ÖÊı£º";
-   cin>>node->English_sc;
+  cout << "\té«˜æ•°åˆ†æ•°ï¼š";
+  cin >> node->math_sc;
 
-   cout<<"\tC++·ÖÊı£º";
-   cin>>node->C_sc;
-   
-   node->next=NULL;
-   return node;
+  cout << "\tè‹±è¯­åˆ†æ•°ï¼š";
+  cin >> node->English_sc;
+
+  cout << "\tC++åˆ†æ•°ï¼š";
+  cin >> node->C_sc;
+
+  node->next = NULL;
+  return node;
 }
 
-int StuFun::Add_info(StuNode* list,Student* node) //ÊäÈë1µ÷ÓÃ
+int StuFun::Add_info(StuNode *list, Student *node) //è¾“å…¥1è°ƒç”¨
 {
-	if(!list||!node)
- 	return -1;
- 	if(!list->head)
- 	{
-      list->head = node;
-      list->tail = node;
-    }
-    else
-    {
- 	  list->tail->next = node;
- 	  list->tail=node;
-	}
-	
-	list->num++;
-	return 0;
-}
-
-int StuFun::find_mod(StuNode* list,int flag) //²éÑ¯ºÍĞŞ¸ÄÑ§ÉúĞÅÏ¢  ÊäÈë2,3µ÷ÓÃ
-{
-    int n,mat=0,English=0,Csc=0;
-    char cla[10],maj[10],name[10];
-    Student *node=list->head,*find=NULL;
-    
-    if(flag==0) //²éÑ¯Ñ§ÉúĞÅÏ¢ 
-    {
-                     cout<<"\t*************************************\n";
-                     cout<<"\t*****     1,°´Ïµ±ğ²éÑ¯£¡       ******\n";
-                     cout<<"\t*****     2,°´°à¼¶²éÑ¯£¡       ******\n";
-                     cout<<"\t*****     3,°´¸ßÊı³É¼¨²éÑ¯£¡   ******\n";
-                     cout<<"\t*****     4,°´Ó¢Óï³É¼¨²éÑ¯£¡   ******\n";
-                     cout<<"\t*****     5,°´CÓïÑÔ³É¼¨²éÑ¯£¡  ******\n";
-                     cout<<"\t*****     6,°´Ñ§ÉúĞÕÃû²éÑ¯£¡   ******\n";
-                     cout<<"\t*************************************\n\n"; 
-                     cout<<"ÇëÊäÈëÑ¡Ïî[ ]\b\b";
-                 cin>>n;
-          if(!list)
-          return -1;
-          switch(n)
-          {
-                 case 1:cout<<"\tÇëÊäÈëÄúÒª²éÑ¯Ñ§ÉúµÄÏµ±ğ£º";
-                        cin>>maj;break;
-                 case 2:cout<<"\tÇëÊäÈëÄúÒª²éÑ¯Ñ§ÉúµÄ°à¼¶£º";
-                        cin>>cla;break;
-                 case 3:cout<<"\tÇëÊäÈëÄúÒª²éÑ¯Ñ§ÉúµÄ¸ßÊı³É¼¨£º";
-                        cin>>mat;break;
-                 case 4:cout<<"\tÇëÊäÈëÄúÒª²éÑ¯Ñ§ÉúµÄÓ¢Óï³É¼¨£º";
-                        cin>>English;break;
-                 case 5:cout<<"\tÇëÊäÈëÄúÒª²éÑ¯Ñ§ÉúµÄCÓïÑÔ³É¼¨£º";
-                        cin>>Csc;break; 
-                 case 6:cout<<"\tÇëÊäÈëÄúÒª²éÑ¯Ñ§ÉúµÄCÓïÑÔ³É¼¨£º";
-                        cin>>name;break; 
-                 default:cout<<"\tÊäÈë´íÎó£¡\n";
-           }
-        cout<<"\n\tÑ§ºÅ\tĞÕÃû\tÏµ±ğ\t°à¼¶\t¸ßÊı\tÓ¢Óï\tCÓïÑÔ\n\n"; 
-    }
-    
-    if(flag==1) //ĞŞ¸ÄÑ§ÉúĞÅÏ¢ 
-    {
-       cout<<"\tÇëÊäÈëÄãÒªĞŞ¸ÄÑ§ÉúĞÕÃû£º";
-       cin>>name;
-    }
-    
-    while(node)
-    {
-          switch(n)
-          {
-                case 1:if(!strcmp(node->major , maj)) 
-                       cout<<"\t"<<node->num<<"\t"<<node->name<<"\t"<<node->major<<"\t"<<node->clas<<
-					   "\t"<<node->math_sc<<"\t"<<node->English_sc<<"\t"<<node->C_sc<<endl;
-                       break;
-                case 2:if(!strcmp(node->clas , cla))
-                       cout<<"\t"<<node->num<<"\t"<<node->name<<"\t"<<node->major<<"\t"<<node->clas<<
-					   "\t"<<node->math_sc<<"\t"<<node->English_sc<<"\t"<<node->C_sc<<endl;
-                       break;
-                case 3:if(node->math_sc == mat)
-                       cout<<"\t"<<node->num<<"\t"<<node->name<<"\t"<<node->major<<"\t"<<node->clas<<
-					   "\t"<<node->math_sc<<"\t"<<node->English_sc<<"\t"<<node->C_sc<<endl;
-                       break;
-                case 4:if(node->English_sc == English)
-                       cout<<"\t"<<node->num<<"\t"<<node->name<<"\t"<<node->major<<"\t"<<node->clas<<
-					   "\t"<<node->math_sc<<"\t"<<node->English_sc<<"\t"<<node->C_sc<<endl;
-                       break;
-                case 5:if(node->C_sc == Csc)
-                       cout<<"\t"<<node->num<<"\t"<<node->name<<"\t"<<node->major<<"\t"<<node->clas<<
-					   "\t"<<node->math_sc<<"\t"<<node->English_sc<<"\t"<<node->C_sc<<endl;
-                       break; 
-                case 6:if(!strcmp(node->name , name))
-                       cout<<"\t"<<node->num<<"\t"<<node->name<<"\t"<<node->major<<"\t"<<node->clas<<
-					   "\t"<<node->math_sc<<"\t"<<node->English_sc<<"\t"<<node->C_sc<<endl;
-                       break;
-          }
-          
-           if(flag==1) //ĞŞ¸ÄÑ§ÉúĞÅÏ¢ 
-           {
-                    if(!strcmp(node->name, name))
-                      {
-                          cout<<"\t\tÑ§ºÅ£º";
-                           cin>>node->num;
-                          cout<<"\t\tĞÕÃû£º";
-                           cin>>node->name;
-                          cout<<"\t\tÏµ±ğ£º";
-                           cin>>node->major;
-                          cout<<"\t\t°à¼¶£º";
-                           cin>>node->clas;
-                          cout<<"\t\t¸ßÊı·ÖÊı£º";
-                           cin>>node->math_sc;
-                          cout<<"\t\tÓ¢Óï·ÖÊı£º";
-                           cin>>node->English_sc;
-                          cout<<"\t\tC++·ÖÊı£º";
-                           cin>>node->C_sc;
-                            break;
-                       }
-               
-           } 
-        
-          find = node;
-          node = node->next;
-      }
-      getchar();
-    return 0;
-}
-
-int StuFun::aver_jg_yx(StuNode* list) //¶ÔÑ§ÉúĞÅÏ¢½øĞĞ·ÖÎö
-{
-    Student* node=list->head;
-    char major_name[10],class_name[10];
-    float sum_math=0,sum_El=0,sum_C=0,aver_math,aver_El,aver_C,flag,m=0;
-    float jg_math,jg_El,jg_C,yx_math,yx_El,yx_C,n=0.0,n1=0.0,n2=0.0,n3=0.0,n4=0.0,n5=0.0,n6=0.0;;
-       //Çóµ¥¿ÆÆ½¾ù·Ö,¼°¸ñÂÊºÍÓÅĞãÂÊ
-               cout<<"\t*****************************************\n"; 
-               cout<<"\t****    1,°´Ïµ¶ÔÑ§ÉúĞÅÏ¢½øĞĞ·ÖÎö£¡   ****\n"; 
-               cout<<"\t****    2,°´°à¶ÔÑ§ÉúĞÅÏ¢½øĞĞ·ÖÎö£¡   ****\n";
-               cout<<"\t*****************************************\n\n"; 
-               cout<<"\tÇëÊäÈëÑ¡Ïî[ ]\b\b";
-               cin>>flag;
-       if(flag == 1) //°´Ïµ¶ÔÑ§ÉúĞÅÏ¢½øĞĞ·ÖÎö£¡
-       {
-           cout<<"\tÇëÊäÈëÏµ±ğÃû³Æ£º";
-           cin>>major_name;
-           m = strcmp( node->major,major_name );
-       }
-       if(flag == 2) //°´°à¶ÔÑ§ÉúĞÅÏ¢½øĞĞ·ÖÎö£¡  //ÓĞµãÎÊÌâ 
-       {
-           cout<<"\tÇëÊäÈë°à¼¶Ãû³Æ£º";
-           cin>>class_name;
-           m = strcmp( node->clas,class_name );
-       }
-       while(node)
-       {
-         if(!m) 
-         {
-          sum_math += node->math_sc;
-          sum_El += node->English_sc;
-          sum_C += node->C_sc;        
-          if(node->math_sc >=60)  //Í³¼Æµ¥¿Æ¼°¸ñºÍÓÅĞãÈËÊı 
-          { 
-            n1++; 
-            if(node->math_sc >=90)
-             n4++;  
-          }
-          if(node->English_sc >=60)
-          {
-            n2++;
-            if(node->English_sc >=90)
-            n5++;
-          }
-          if(node->C_sc >=60)
-          {
-            n3++;
-            if(node->C_sc >=90)
-            n6++;
-          }
-            n++;
-         }
-           node = node->next;
-       }
-        aver_math=sum_math/n;
-        aver_El=sum_El/n;
-        aver_C=sum_C/n;
-      
-        jg_math=n1/n;
-        jg_El=n2/n;
-        jg_C=n3/n;
-       
-        yx_math=n4/n;
-        yx_El=n5/n;
-        yx_C=n6/n;
-
-        cout<<"\tÆ½¾ù³É¼¨Îª£º"<<"\n¸ßÊı£º"<<aver_math<<"\tÓ¢Óï£º"<<aver_El<<"\tC++£º"<<aver_C<<endl;
-        cout<<"\t¼°¸ñÂÊÎª£º"<<"\n¸ßÊı£º"<<jg_math<<"\tÓ¢Óï£º"<<jg_math<<"\tC++£º"<<jg_C<<endl;
-        cout<<"\tÓÅĞãÂÊÎª£º"<<"\n¸ßÊı£º"<<yx_math<<"\tÓ¢Óï£º"<<yx_El<<"\tC++£º"<<yx_C<<endl; 
-        getchar();
-    return 0; 
-}
-
-int StuFun::All_aver_max_min(StuNode* list) //¶ÔËù¿ª¿Î³ÌµÄ³É¼¨·ÖÎö£¨ÇóÆäÆ½¾ù³É¼¨£¬×î¸ß·ÖºÍ×îµÍ·Ö£©
-{
-    Student* node=list->head;
-    Student* p=list->head->next; 
-    int sum_math=0,sum_El=0,sum_C=0,aver_math,aver_El,aver_C,max_math,max_El,max_C,min_math,min_El,min_C,n=0;
-    while(node)
-    {
-       sum_math += node->math_sc;
-       sum_El += node->English_sc;
-       sum_C += node->C_sc;
-       n++;
-       node = node->next;
-    }
-    aver_math = sum_math/n;
-    aver_El = sum_El/n;
-    aver_C = sum_C/n;
-    cout<<"\tËù¿ª¿Î³ÌÆ½¾ù³É¼¨Îª£º"<<aver_math<<"\tÓ¢Óï£º"<<aver_El<<"\tC++£º"<<aver_C<<endl;
-    
-       node=list->head;
-       max_math=node->math_sc;
-       max_El=node->English_sc;
-       max_C=node->C_sc;
-       min_math=node->math_sc;
-       min_El=node->English_sc;
-       min_C=node->C_sc;
-       for(;p!=NULL;p=p->next)
-       {
-        if(p->math_sc > max_math)
-        max_math = p->math_sc;
-        
-        if(p->English_sc > max_El)
-        max_El = p->English_sc;
-        
-        if(p->C_sc > max_C)
-        max_C = p->C_sc;
-        
-        if(p->math_sc < min_math)
-        min_math = p->math_sc;
-        
-        if(p->English_sc < min_El)
-        min_El = p->English_sc;
-        
-        if(p->C_sc < min_C)
-        min_C = p->C_sc;
-       }
-      cout<<"\tµ¥¿Æ×î¸ß·ÖÎª£º"<<"\n¸ßÊı£º"<<max_math<<"\tÓ¢Óï£º"<<max_El<<"\tC++£º"<<max_C<<endl; 
-      cout<<"\tµ¥¿Æ×îµÍ·ÖÎª£º"<<"\n¸ßÊı£º"<<min_math<<"\tÓ¢Óï£º"<<min_El<<"\tC++£º"<<min_C<<endl; 
-      getchar();
-    return 0; 
-}
-
-int StuFun::pm(StuNode* list)   //¶ÔÑ§Éú³É¼¨½øĞĞÅÅÃû 
-{
-    int n,i,j,max,t,x,y,z,a=0;
-    char class_name[10],major_name[10];
-    int m=list->num;
-    int sum[m];
-    Student stu[m],stud[m];
-    Student* p=list->head;
-    Student* q=list->head;
-
-     
-            
-            printf("\t**************************************\n");
-            printf("\t****    1,ÒÔ°à¼¶µ¥¿Æ½øĞĞÅÅÃû£¡    ****\n");   //µ¥¿Æ³É¼¨½øĞĞÅÅÃû 
-            printf("\t****    2,ÒÔÏµ±ğµ¥¿Æ½øĞĞÅÅÃû£¡    ****\n");
-            printf("\t****    3,Ñ§Éú×ÜÌå³É¼¨½øĞĞÅÅÃû£¡  ****\n ");
-            printf("\t**************************************\n\n");
-            printf("ÇëÊäÈëÑ¡Ïî[ ]\b\b");
-            scanf("%d",&n);
-  if(n==1||n==2)
-  {          
-    if(n==1)
-    {
-              cout<<"\tÇëÊäÈëÄúÒªÅÅÃûµÄ°à¼¶Ãû³Æ£º";
-              cin>>class_name;
-    }
-    else if(n==2)
-    {
-              cout<<"\tÇëÊäÈëÄúÒªÅÅÃûµÄÏµ±ğÃû³Æ£º";
-              cin>>major_name;
-    }
-            
-         for(i=0;q!=NULL;q=q->next)
-         {
-             if(n==1&&!strcmp(q->clas,class_name))
-             {
-                stud[i].math_sc = q->math_sc;
-                stud[i].English_sc = q->English_sc;
-                stud[i].C_sc = q->C_sc;
-                i++;
-             }
-             else if(n==2&&!strcmp(q->major,major_name))
-             {
-                stud[i].math_sc = q->math_sc;
-                stud[i].English_sc = q->English_sc;
-                stud[i].C_sc = q->C_sc;
-                i++;
-             }
-         }
-         a=i;           
-         for(i=0;i<a-1;i++)
-         {
-                max=i;
-                for(j=i+1;j<a;j++)
-                if(stud[j].math_sc > stud[max].math_sc)
-                max=j;
-                 if(max != i)
-                 {
-                      t=stud[i].math_sc;
-                      stud[i].math_sc = stud[max].math_sc;
-                      stud[max].math_sc =t;
-                 }  
-         }
-         for(i=0;i<a-1;i++)
-         {
-                max=i; 
-                for(j=i+1;j<a;j++)     
-                 if(stud[j].English_sc >stud[max].English_sc)
-                   max=j;
-                  if(max != i)
-                  {
-                      x=stud[i].English_sc;
-                      stud[i].English_sc =stud[max].English_sc;
-                      stud[max].English_sc = x;
-                  }
-         } 
-         for(i=0;i<a-1;i++)
-         {
-                max=i; 
-                for(j=i+1;j<a;j++)          
-                 if(stud[j].C_sc > stud[max].C_sc)
-                  max=j;                     
-                  if(max != i)
-                  {
-                      y=stud[i].C_sc;
-                      stud[i].C_sc = stud[max].C_sc;
-                      stud[max].C_sc =y;     
-                  }
-         }
+  if (!list || !node)
+    return -1;
+  if (!list->head)
+  {
+    list->head = node;
+    list->tail = node;
   }
-    else if(n==3)
-    {      
-       for(i=0;p!=NULL,i<m;p=p->next,i++)      //×ÜÌå³É¼¨½øĞĞÅÅÃû 
-       {
-          sum[i]=p->math_sc + p->English_sc + p->C_sc;
-          stu[i].math_sc = p->math_sc;
-          stu[i].English_sc = p->English_sc;
-          stu[i].C_sc = p->C_sc;
-       }
-   
-            for(i=0;i<m-1;i++) 
-           {
-              max=i;
-              for(j=i+1;j<m;j++)
-               if(sum[j] > sum[max])
-                max=j;
-               if(max != i)
-               {
-                   t=sum[i];
-                   sum[i]=sum[max];
-                   sum[max]=t;
-                   
-                   x=stu[i].math_sc;
-                   stu[i].math_sc = stu[max].math_sc;
-                   stu[max].math_sc = x;
-                   
-                   y=stu[i].English_sc;
-                   stu[i].English_sc = stu[max].English_sc;
-                   stu[max].English_sc=y;
-                   
-                   z=stu[i].C_sc;
-                   stu[i].C_sc = stu[max].C_sc;
-                   stu[max].C_sc=z;
-               }
-            }
-    }   
-       
-      if(n==1||n==2)
-      { 
-         if(n==1)
-          cout<<class_name<<"°àµ¥¿Æ½øĞĞÅÅÃûÈçÏÂ£º\n\n";
-         else if(n==2)
-          cout<<major_name<<"Ïµµ¥¿Æ½øĞĞÅÅÃûÈçÏÂ£º\n\n";
-          cout<<"\t\t¸ßÊı\tÓ¢Óï\tC++\n\n";
-           for(i=0;i<a;i++)
-           cout<<i+1<<"Ãû\t"<<stud[i].math_sc<<"\t"<<stud[i].English_sc<<"\t"<<stud[i].C_sc<<endl;
-      }
-           
-     else if(n==3)
-     {
-        cout<<"\n\tÑ§Éú×ÜÌå³É¼¨ÅÅÃûÈçÏÂ:\n\n ";
-        cout<<"\t\t×Ü·Ö\t¸ßÊı\tÓ¢Óï\tC++\n\n";
-        for(i=0;i<m;i++)
-        cout<<i+1<<"Ãû\t"<<sum[i]<<"\t"<<stu[i].math_sc<<"\t"<<stu[i].English_sc<<"\t"<<stu[i].C_sc<<endl;
-     }  
-     else
-     cout<<"\t\tÊäÈë´íÎó£¡\n";
-     getchar();
-    return 0;
+  else
+  {
+    list->tail->next = node;
+    list->tail = node;
+  }
+
+  list->num++;
+  return 0;
 }
 
-
-int StuFun::deleteStu(StuNode* list)
+int StuFun::find_mod(StuNode *list, int flag) //æŸ¥è¯¢å’Œä¿®æ”¹å­¦ç”Ÿä¿¡æ¯  è¾“å…¥2,3è°ƒç”¨
 {
-       char name[10];
-       Student *node=list->head,*q=NULL;
-       cout<<"\tÇëÊäÈëÄãÒªÉ¾³ıÑ§ÉúĞÕÃû£º";
-       cin>>name; 
-       if(node==NULL)
-       return 0;
-        if(!strcmp(node->name , name))
-         {
-                    list->head = node->next;
-                    delete node;
-                    cout<<"ÒÑ¾­³É¹¦É¾³ı¸ÃÑ§ÉúĞÅÏ¢£¡\n";
-         }
-         else
-         {
-                 
-                 while(strcmp(node->name , name )&& node->next!=NULL)
-                 {
-                              find = node;
-                              node = node->next;         
-                 }   
-                            
-                 if(!strcmp(node->name, name))
-                 {
-                             find->next=node->next;
-                             delete node;
-                       cout<<"ÒÑ¾­³É¹¦É¾³ı¸ÃÑ§ÉúĞÅÏ¢£¡\n";
-                 }
-         }
-         
-   getchar();
-   return 0;
-}
+  int n, mat = 0, English = 0, Csc = 0;
+  char cla[10], maj[10], name[10];
+  Student *node = list->head, *find = NULL;
 
-int StuFun::show(StuNode* list)
-{
-    Student *node=list->head,*q=NULL;
-    int n=0;
-    if(!n)
+  if (flag == 0) //æŸ¥è¯¢å­¦ç”Ÿä¿¡æ¯
+  {
+    cout << "\t*************************************\n";
+    cout << "\t*****     1,æŒ‰ç³»åˆ«æŸ¥è¯¢ï¼       ******\n";
+    cout << "\t*****     2,æŒ‰ç­çº§æŸ¥è¯¢ï¼       ******\n";
+    cout << "\t*****     3,æŒ‰é«˜æ•°æˆç»©æŸ¥è¯¢ï¼   ******\n";
+    cout << "\t*****     4,æŒ‰è‹±è¯­æˆç»©æŸ¥è¯¢ï¼   ******\n";
+    cout << "\t*****     5,æŒ‰Cè¯­è¨€æˆç»©æŸ¥è¯¢ï¼  ******\n";
+    cout << "\t*****     6,æŒ‰å­¦ç”Ÿå§“åæŸ¥è¯¢ï¼   ******\n";
+    cout << "\t*************************************\n\n";
+    cout << "è¯·è¾“å…¥é€‰é¡¹[ ]\b\b";
+    cin >> n;
+    if (!list)
+      return -1;
+    switch (n)
     {
-      cout<<"\n\tÑ§ºÅ\tĞÕÃû\tÏµ±ğ\t°à¼¶\t¸ßÊı\tÓ¢Óï\tCÓïÑÔ\n\n"; 
+    case 1:
+      cout << "\tè¯·è¾“å…¥æ‚¨è¦æŸ¥è¯¢å­¦ç”Ÿçš„ç³»åˆ«ï¼š";
+      cin >> maj;
+      break;
+    case 2:
+      cout << "\tè¯·è¾“å…¥æ‚¨è¦æŸ¥è¯¢å­¦ç”Ÿçš„ç­çº§ï¼š";
+      cin >> cla;
+      break;
+    case 3:
+      cout << "\tè¯·è¾“å…¥æ‚¨è¦æŸ¥è¯¢å­¦ç”Ÿçš„é«˜æ•°æˆç»©ï¼š";
+      cin >> mat;
+      break;
+    case 4:
+      cout << "\tè¯·è¾“å…¥æ‚¨è¦æŸ¥è¯¢å­¦ç”Ÿçš„è‹±è¯­æˆç»©ï¼š";
+      cin >> English;
+      break;
+    case 5:
+      cout << "\tè¯·è¾“å…¥æ‚¨è¦æŸ¥è¯¢å­¦ç”Ÿçš„Cè¯­è¨€æˆç»©ï¼š";
+      cin >> Csc;
+      break;
+    case 6:
+      cout << "\tè¯·è¾“å…¥æ‚¨è¦æŸ¥è¯¢å­¦ç”Ÿçš„Cè¯­è¨€æˆç»©ï¼š";
+      cin >> name;
+      break;
+    default:
+      cout << "\tè¾“å…¥é”™è¯¯ï¼\n";
+    }
+    cout << "\n\tå­¦å·\tå§“å\tç³»åˆ«\tç­çº§\té«˜æ•°\tè‹±è¯­\tCè¯­è¨€\n\n";
+  }
+
+  if (flag == 1) //ä¿®æ”¹å­¦ç”Ÿä¿¡æ¯
+  {
+    cout << "\tè¯·è¾“å…¥ä½ è¦ä¿®æ”¹å­¦ç”Ÿå§“åï¼š";
+    cin >> name;
+  }
+
+  while (node)
+  {
+    switch (n)
+    {
+    case 1:
+      if (!strcmp(node->major, maj))
+        cout << "\t" << node->num << "\t" << node->name << "\t" << node->major << "\t" << node->clas << "\t" << node->math_sc << "\t" << node->English_sc << "\t" << node->C_sc << endl;
+      break;
+    case 2:
+      if (!strcmp(node->clas, cla))
+        cout << "\t" << node->num << "\t" << node->name << "\t" << node->major << "\t" << node->clas << "\t" << node->math_sc << "\t" << node->English_sc << "\t" << node->C_sc << endl;
+      break;
+    case 3:
+      if (node->math_sc == mat)
+        cout << "\t" << node->num << "\t" << node->name << "\t" << node->major << "\t" << node->clas << "\t" << node->math_sc << "\t" << node->English_sc << "\t" << node->C_sc << endl;
+      break;
+    case 4:
+      if (node->English_sc == English)
+        cout << "\t" << node->num << "\t" << node->name << "\t" << node->major << "\t" << node->clas << "\t" << node->math_sc << "\t" << node->English_sc << "\t" << node->C_sc << endl;
+      break;
+    case 5:
+      if (node->C_sc == Csc)
+        cout << "\t" << node->num << "\t" << node->name << "\t" << node->major << "\t" << node->clas << "\t" << node->math_sc << "\t" << node->English_sc << "\t" << node->C_sc << endl;
+      break;
+    case 6:
+      if (!strcmp(node->name, name))
+        cout << "\t" << node->num << "\t" << node->name << "\t" << node->major << "\t" << node->clas << "\t" << node->math_sc << "\t" << node->English_sc << "\t" << node->C_sc << endl;
+      break;
+    }
+
+    if (flag == 1) //ä¿®æ”¹å­¦ç”Ÿä¿¡æ¯
+    {
+      if (!strcmp(node->name, name))
+      {
+        cout << "\t\tå­¦å·ï¼š";
+        cin >> node->num;
+        cout << "\t\tå§“åï¼š";
+        cin >> node->name;
+        cout << "\t\tç³»åˆ«ï¼š";
+        cin >> node->major;
+        cout << "\t\tç­çº§ï¼š";
+        cin >> node->clas;
+        cout << "\t\té«˜æ•°åˆ†æ•°ï¼š";
+        cin >> node->math_sc;
+        cout << "\t\tè‹±è¯­åˆ†æ•°ï¼š";
+        cin >> node->English_sc;
+        cout << "\t\tC++åˆ†æ•°ï¼š";
+        cin >> node->C_sc;
+        break;
+      }
+    }
+
+    find = node;
+    node = node->next;
+  }
+  getchar();
+  return 0;
+}
+
+int StuFun::aver_jg_yx(StuNode *list) //å¯¹å­¦ç”Ÿä¿¡æ¯è¿›è¡Œåˆ†æ
+{
+  Student *node = list->head;
+  char major_name[10], class_name[10];
+  float sum_math = 0, sum_El = 0, sum_C = 0, aver_math, aver_El, aver_C, flag, m = 0;
+  float jg_math, jg_El, jg_C, yx_math, yx_El, yx_C, n = 0.0, n1 = 0.0, n2 = 0.0, n3 = 0.0, n4 = 0.0, n5 = 0.0, n6 = 0.0;
+  ;
+  //æ±‚å•ç§‘å¹³å‡åˆ†,åŠæ ¼ç‡å’Œä¼˜ç§€ç‡
+  cout << "\t*****************************************\n";
+  cout << "\t****    1,æŒ‰ç³»å¯¹å­¦ç”Ÿä¿¡æ¯è¿›è¡Œåˆ†æï¼   ****\n";
+  cout << "\t****    2,æŒ‰ç­å¯¹å­¦ç”Ÿä¿¡æ¯è¿›è¡Œåˆ†æï¼   ****\n";
+  cout << "\t*****************************************\n\n";
+  cout << "\tè¯·è¾“å…¥é€‰é¡¹[ ]\b\b";
+  cin >> flag;
+  if (flag == 1) //æŒ‰ç³»å¯¹å­¦ç”Ÿä¿¡æ¯è¿›è¡Œåˆ†æï¼
+  {
+    cout << "\tè¯·è¾“å…¥ç³»åˆ«åç§°ï¼š";
+    cin >> major_name;
+    m = strcmp(node->major, major_name);
+  }
+  if (flag == 2) //æŒ‰ç­å¯¹å­¦ç”Ÿä¿¡æ¯è¿›è¡Œåˆ†æï¼  //æœ‰ç‚¹é—®é¢˜
+  {
+    cout << "\tè¯·è¾“å…¥ç­çº§åç§°ï¼š";
+    cin >> class_name;
+    m = strcmp(node->clas, class_name);
+  }
+  while (node)
+  {
+    if (!m)
+    {
+      sum_math += node->math_sc;
+      sum_El += node->English_sc;
+      sum_C += node->C_sc;
+      if (node->math_sc >= 60) //ç»Ÿè®¡å•ç§‘åŠæ ¼å’Œä¼˜ç§€äººæ•°
+      {
+        n1++;
+        if (node->math_sc >= 90)
+          n4++;
+      }
+      if (node->English_sc >= 60)
+      {
+        n2++;
+        if (node->English_sc >= 90)
+          n5++;
+      }
+      if (node->C_sc >= 60)
+      {
+        n3++;
+        if (node->C_sc >= 90)
+          n6++;
+      }
       n++;
     }
-    while(node)
-    {
-      cout<<"\t"<<node->num<<"\t"<<node->name<<"\t"<<node->major<<"\t"<<node->clas<<
-					   "\t"<<node->math_sc<<"\t"<<node->English_sc<<"\t"<<node->C_sc<<endl;
-    q = node;  
     node = node->next;
-    }  
-    getchar();
+  }
+  aver_math = sum_math / n;
+  aver_El = sum_El / n;
+  aver_C = sum_C / n;
+
+  jg_math = n1 / n;
+  jg_El = n2 / n;
+  jg_C = n3 / n;
+
+  yx_math = n4 / n;
+  yx_El = n5 / n;
+  yx_C = n6 / n;
+
+  cout << "\tå¹³å‡æˆç»©ä¸ºï¼š"
+       << "\né«˜æ•°ï¼š" << aver_math << "\tè‹±è¯­ï¼š" << aver_El << "\tC++ï¼š" << aver_C << endl;
+  cout << "\tåŠæ ¼ç‡ä¸ºï¼š"
+       << "\né«˜æ•°ï¼š" << jg_math << "\tè‹±è¯­ï¼š" << jg_math << "\tC++ï¼š" << jg_C << endl;
+  cout << "\tä¼˜ç§€ç‡ä¸ºï¼š"
+       << "\né«˜æ•°ï¼š" << yx_math << "\tè‹±è¯­ï¼š" << yx_El << "\tC++ï¼š" << yx_C << endl;
+  getchar();
+  return 0;
+}
+
+int StuFun::All_aver_max_min(StuNode *list) //å¯¹æ‰€å¼€è¯¾ç¨‹çš„æˆç»©åˆ†æï¼ˆæ±‚å…¶å¹³å‡æˆç»©ï¼Œæœ€é«˜åˆ†å’Œæœ€ä½åˆ†ï¼‰
+{
+  Student *node = list->head;
+  Student *p = list->head->next;
+  int sum_math = 0, sum_El = 0, sum_C = 0, aver_math, aver_El, aver_C, max_math, max_El, max_C, min_math, min_El, min_C, n = 0;
+  while (node)
+  {
+    sum_math += node->math_sc;
+    sum_El += node->English_sc;
+    sum_C += node->C_sc;
+    n++;
+    node = node->next;
+  }
+  aver_math = sum_math / n;
+  aver_El = sum_El / n;
+  aver_C = sum_C / n;
+  cout << "\tæ‰€å¼€è¯¾ç¨‹å¹³å‡æˆç»©ä¸ºï¼š" << aver_math << "\tè‹±è¯­ï¼š" << aver_El << "\tC++ï¼š" << aver_C << endl;
+
+  node = list->head;
+  max_math = node->math_sc;
+  max_El = node->English_sc;
+  max_C = node->C_sc;
+  min_math = node->math_sc;
+  min_El = node->English_sc;
+  min_C = node->C_sc;
+  for (; p != NULL; p = p->next)
+  {
+    if (p->math_sc > max_math)
+      max_math = p->math_sc;
+
+    if (p->English_sc > max_El)
+      max_El = p->English_sc;
+
+    if (p->C_sc > max_C)
+      max_C = p->C_sc;
+
+    if (p->math_sc < min_math)
+      min_math = p->math_sc;
+
+    if (p->English_sc < min_El)
+      min_El = p->English_sc;
+
+    if (p->C_sc < min_C)
+      min_C = p->C_sc;
+  }
+  cout << "\tå•ç§‘æœ€é«˜åˆ†ä¸ºï¼š"
+       << "\né«˜æ•°ï¼š" << max_math << "\tè‹±è¯­ï¼š" << max_El << "\tC++ï¼š" << max_C << endl;
+  cout << "\tå•ç§‘æœ€ä½åˆ†ä¸ºï¼š"
+       << "\né«˜æ•°ï¼š" << min_math << "\tè‹±è¯­ï¼š" << min_El << "\tC++ï¼š" << min_C << endl;
+  getchar();
+  return 0;
+}
+
+int StuFun::pm(StuNode *list) //å¯¹å­¦ç”Ÿæˆç»©è¿›è¡Œæ’å
+{
+  int n, i, j, max, t, x, y, z, a = 0;
+  char class_name[10], major_name[10];
+  int m = list->num;
+  int sum[m];
+  Student stu[m], stud[m];
+  Student *p = list->head;
+  Student *q = list->head;
+
+  printf("\t**************************************\n");
+  printf("\t****    1,ä»¥ç­çº§å•ç§‘è¿›è¡Œæ’åï¼    ****\n"); //å•ç§‘æˆç»©è¿›è¡Œæ’å
+  printf("\t****    2,ä»¥ç³»åˆ«å•ç§‘è¿›è¡Œæ’åï¼    ****\n");
+  printf("\t****    3,å­¦ç”Ÿæ€»ä½“æˆç»©è¿›è¡Œæ’åï¼  ****\n ");
+  printf("\t**************************************\n\n");
+  printf("è¯·è¾“å…¥é€‰é¡¹[ ]\b\b");
+  scanf("%d", &n);
+  if (n == 1 || n == 2)
+  {
+    if (n == 1)
+    {
+      cout << "\tè¯·è¾“å…¥æ‚¨è¦æ’åçš„ç­çº§åç§°ï¼š";
+      cin >> class_name;
+    }
+    else if (n == 2)
+    {
+      cout << "\tè¯·è¾“å…¥æ‚¨è¦æ’åçš„ç³»åˆ«åç§°ï¼š";
+      cin >> major_name;
+    }
+
+    for (i = 0; q != NULL; q = q->next)
+    {
+      if (n == 1 && !strcmp(q->clas, class_name))
+      {
+        stud[i].math_sc = q->math_sc;
+        stud[i].English_sc = q->English_sc;
+        stud[i].C_sc = q->C_sc;
+        i++;
+      }
+      else if (n == 2 && !strcmp(q->major, major_name))
+      {
+        stud[i].math_sc = q->math_sc;
+        stud[i].English_sc = q->English_sc;
+        stud[i].C_sc = q->C_sc;
+        i++;
+      }
+    }
+    a = i;
+    for (i = 0; i < a - 1; i++)
+    {
+      max = i;
+      for (j = i + 1; j < a; j++)
+        if (stud[j].math_sc > stud[max].math_sc)
+          max = j;
+      if (max != i)
+      {
+        t = stud[i].math_sc;
+        stud[i].math_sc = stud[max].math_sc;
+        stud[max].math_sc = t;
+      }
+    }
+    for (i = 0; i < a - 1; i++)
+    {
+      max = i;
+      for (j = i + 1; j < a; j++)
+        if (stud[j].English_sc > stud[max].English_sc)
+          max = j;
+      if (max != i)
+      {
+        x = stud[i].English_sc;
+        stud[i].English_sc = stud[max].English_sc;
+        stud[max].English_sc = x;
+      }
+    }
+    for (i = 0; i < a - 1; i++)
+    {
+      max = i;
+      for (j = i + 1; j < a; j++)
+        if (stud[j].C_sc > stud[max].C_sc)
+          max = j;
+      if (max != i)
+      {
+        y = stud[i].C_sc;
+        stud[i].C_sc = stud[max].C_sc;
+        stud[max].C_sc = y;
+      }
+    }
+  }
+  else if (n == 3)
+  {
+    for (i = 0; p != NULL, i < m; p = p->next, i++) //æ€»ä½“æˆç»©è¿›è¡Œæ’å
+    {
+      sum[i] = p->math_sc + p->English_sc + p->C_sc;
+      stu[i].math_sc = p->math_sc;
+      stu[i].English_sc = p->English_sc;
+      stu[i].C_sc = p->C_sc;
+    }
+
+    for (i = 0; i < m - 1; i++)
+    {
+      max = i;
+      for (j = i + 1; j < m; j++)
+        if (sum[j] > sum[max])
+          max = j;
+      if (max != i)
+      {
+        t = sum[i];
+        sum[i] = sum[max];
+        sum[max] = t;
+
+        x = stu[i].math_sc;
+        stu[i].math_sc = stu[max].math_sc;
+        stu[max].math_sc = x;
+
+        y = stu[i].English_sc;
+        stu[i].English_sc = stu[max].English_sc;
+        stu[max].English_sc = y;
+
+        z = stu[i].C_sc;
+        stu[i].C_sc = stu[max].C_sc;
+        stu[max].C_sc = z;
+      }
+    }
+  }
+
+  if (n == 1 || n == 2)
+  {
+    if (n == 1)
+      cout << class_name << "ç­å•ç§‘è¿›è¡Œæ’åå¦‚ä¸‹ï¼š\n\n";
+    else if (n == 2)
+      cout << major_name << "ç³»å•ç§‘è¿›è¡Œæ’åå¦‚ä¸‹ï¼š\n\n";
+    cout << "\t\té«˜æ•°\tè‹±è¯­\tC++\n\n";
+    for (i = 0; i < a; i++)
+      cout << i + 1 << "å\t" << stud[i].math_sc << "\t" << stud[i].English_sc << "\t" << stud[i].C_sc << endl;
+  }
+
+  else if (n == 3)
+  {
+    cout << "\n\tå­¦ç”Ÿæ€»ä½“æˆç»©æ’åå¦‚ä¸‹:\n\n ";
+    cout << "\t\tæ€»åˆ†\té«˜æ•°\tè‹±è¯­\tC++\n\n";
+    for (i = 0; i < m; i++)
+      cout << i + 1 << "å\t" << sum[i] << "\t" << stu[i].math_sc << "\t" << stu[i].English_sc << "\t" << stu[i].C_sc << endl;
+  }
+  else
+    cout << "\t\tè¾“å…¥é”™è¯¯ï¼\n";
+  getchar();
+  return 0;
+}
+
+int StuFun::deleteStu(StuNode *list)
+{
+  char name[10];
+  Student *node = list->head, *q = NULL;
+  cout << "\tè¯·è¾“å…¥ä½ è¦åˆ é™¤å­¦ç”Ÿå§“åï¼š";
+  cin >> name;
+  if (node == NULL)
     return 0;
+  if (!strcmp(node->name, name))
+  {
+    list->head = node->next;
+    delete node;
+    cout << "å·²ç»æˆåŠŸåˆ é™¤è¯¥å­¦ç”Ÿä¿¡æ¯ï¼\n";
+  }
+  else
+  {
+
+    while (strcmp(node->name, name) && node->next != NULL)
+    {
+      //find = node;
+      node = node->next;
+    }
+
+    if (!strcmp(node->name, name))
+    {
+      //find->next = node->next;
+      delete node;
+      cout << "å·²ç»æˆåŠŸåˆ é™¤è¯¥å­¦ç”Ÿä¿¡æ¯ï¼\n";
+    }
+  }
+
+  getchar();
+  return 0;
+}
+
+int StuFun::show(StuNode *list)
+{
+  Student *node = list->head, *q = NULL;
+  int n = 0;
+  if (!n)
+  {
+    cout << "\n\tå­¦å·\tå§“å\tç³»åˆ«\tç­çº§\té«˜æ•°\tè‹±è¯­\tCè¯­è¨€\n\n";
+    n++;
+  }
+  while (node)
+  {
+    cout << "\t" << node->num << "\t" << node->name << "\t" << node->major << "\t" << node->clas << "\t" << node->math_sc << "\t" << node->English_sc << "\t" << node->C_sc << endl;
+    q = node;
+    node = node->next;
+  }
+  getchar();
+  return 0;
 }
 
 int menu()
 {
-    int n;
-    system("cls"); 
-	cout<<"\t---------------------------------------------\n";
-	cout<<"\t----------    ³É¼¨¹ÜÀí·ÖÎöÏµÍ³     ----------\n";
-	cout<<"\t---------------------------------------------\n";
-	cout<<"\t----------------    ²Ëµ¥     ----------------\n";
-	cout<<"\t---------------------------------------------\n";
-	cout<<"\t*****       1,Ìí¼ÓÑ§ÉúĞÅÏ¢£¡            *****\n";
-	cout<<"\t*****       2,²éÑ¯Ñ§ÉúĞÅÏ¢£¡            *****\n";
-	cout<<"\t*****       3,ĞŞ¸ÄÑ§ÉúĞÅÏ¢£¡            *****\n";
-	cout<<"\t*****       4,¶ÔÑ§ÉúĞÅÏ¢½øĞĞ·ÖÎö£¡      *****\n";
-    cout<<"\t*****       5,¶ÔËù¿ª¿Î³ÌµÄ³É¼¨·ÖÎö£¡    *****\n";
-    cout<<"\t*****       6,¶ÔÑ§Éú¿¼ÊÔ³É¼¨½øĞĞÅÅÃû    *****\n";
-    cout<<"\t*****       7,É¾³ıÑ§ÉúĞÅÏ¢£¡            *****\n";
-	cout<<"\t*****       8,ÏÔÊ¾ËùÓĞÑ§ÉúĞÅÏ¢£¡        *****\n";
-	cout<<"\t*****       0,ÍË³ö¸ÃÏµÍ³£¡              *****\n";
-	cout<<"\t---------------------------------------------\n\n";
-	cout<<"ÇëÊäÈëÑ¡Ïî[ ]\b\b";
-    cin>>n;
-    return n;
+  int n;
+  system("cls");
+  cout << "\t---------------------------------------------\n";
+  cout << "\t----------    æˆç»©ç®¡ç†åˆ†æç³»ç»Ÿ     ----------\n";
+  cout << "\t---------------------------------------------\n";
+  cout << "\t----------------    èœå•     ----------------\n";
+  cout << "\t---------------------------------------------\n";
+  cout << "\t*****       1,æ·»åŠ å­¦ç”Ÿä¿¡æ¯ï¼            *****\n";
+  cout << "\t*****       2,æŸ¥è¯¢å­¦ç”Ÿä¿¡æ¯ï¼            *****\n";
+  cout << "\t*****       3,ä¿®æ”¹å­¦ç”Ÿä¿¡æ¯ï¼            *****\n";
+  cout << "\t*****       4,å¯¹å­¦ç”Ÿä¿¡æ¯è¿›è¡Œåˆ†æï¼      *****\n";
+  cout << "\t*****       5,å¯¹æ‰€å¼€è¯¾ç¨‹çš„æˆç»©åˆ†æï¼    *****\n";
+  cout << "\t*****       6,å¯¹å­¦ç”Ÿè€ƒè¯•æˆç»©è¿›è¡Œæ’å    *****\n";
+  cout << "\t*****       7,åˆ é™¤å­¦ç”Ÿä¿¡æ¯ï¼            *****\n";
+  cout << "\t*****       8,æ˜¾ç¤ºæ‰€æœ‰å­¦ç”Ÿä¿¡æ¯ï¼        *****\n";
+  cout << "\t*****       0,é€€å‡ºè¯¥ç³»ç»Ÿï¼              *****\n";
+  cout << "\t---------------------------------------------\n\n";
+  cout << "è¯·è¾“å…¥é€‰é¡¹[ ]\b\b";
+  cin >> n;
+  return n;
 }
 
-int StuFun::Free_Node(StuNode* list)                  //ÊÍ·Å
+int StuFun::Free_Node(StuNode *list) //é‡Šæ”¾
 {
-    while(list->head)
-    {
-          list->tail = list->head;
-          list->head = list->head->next;
-          free(list->tail);
-    }
-    
-    free(list);
-    return 0;
+  while (list->head)
+  {
+    list->tail = list->head;
+    list->head = list->head->next;
+    free(list->tail);
+  }
+
+  free(list);
+  return 0;
 }
 
-int StuFun::Read_File(StuNode* list)                           //¶ÁÈ¡ÎÄ¼şĞÅÏ¢
+int StuFun::Read_File(StuNode *list) //è¯»å–æ–‡ä»¶ä¿¡æ¯
 {
-     FILE* fp;
-     Student* p = (Student*)malloc(sizeof(class Student));
-     
-     if((fp = fopen("data","rb")) == NULL)      //´ò¿ªÎÄ¼ş 
-            return -1;
-      
-     while(fread(p,sizeof(class Student),1,fp))
-     {
-            p->next = NULL;
-            Add_info(list,p);
-            p = (Student*)malloc(sizeof(class Student));
-     }
-     
-	 fclose(fp);
-	 return 0;
+  FILE *fp;
+  Student *p = (Student *)malloc(sizeof(class Student));
+
+  if ((fp = fopen("data", "rb")) == NULL) //æ‰“å¼€æ–‡ä»¶
+    return -1;
+
+  while (fread(p, sizeof(class Student), 1, fp))
+  {
+    p->next = NULL;
+    Add_info(list, p);
+    p = (Student *)malloc(sizeof(class Student));
+  }
+
+  fclose(fp);
+  return 0;
 }
 
-void Write_File(StuNode* list)            //Ğ´ÈëÎÄ¼ş 
+void Write_File(StuNode *list) //å†™å…¥æ–‡ä»¶
 {
-	Student* p = list->head;
-    FILE* fp = fopen("data","wb");
+  Student *p = list->head;
+  FILE *fp = fopen("data", "wb");
 
-	while(p)
-	{
-	   fwrite(p,sizeof(class Student),1,fp);
-	   p = p -> next; 
-	}
-	
-	fclose(fp);
+  while (p)
+  {
+    fwrite(p, sizeof(class Student), 1, fp);
+    p = p->next;
+  }
+
+  fclose(fp);
 }
-
 
 int main()
 {
-	StuNode* list=NULL;
-	StuFun s1;
-    string name;
-    int n;
-    while(!(list=creat_node(list)))
+  StuNode *list = NULL;
+  StuFun s1;
+  string name;
+  int n;
+  while (!(list = creat_node(list)))
     s1.Read_File(list);
-    while(n=menu())
+  while (n = menu())
+  {
+    switch (n)
     {
-       switch(n)
-       {
-	     case 1:system("cls");if(s1.Add_info(list,s1.creat_stu())==-1)
-                cout<<"\t\tÌí¼ÓÊ§°Ü\n";
-                break;
-         case 2:
-         case 3:system("cls");s1.find_mod(list,n-2);break; 
-         case 4:system("cls");
-                s1.aver_jg_yx(list);break;
-         case 5:system("cls");s1.All_aver_max_min(list);break;
-         case 6:system("cls");s1.pm(list);break;
-         case 7:system("cls");
-                s1.deleteStu(list);break;
-         case 8:system("cls");s1.show(list);break;
-         default:system("cls");cout<<"\t\tÊäÈë´íÎó£¡";
-       }
-      getchar();
+    case 1:
+      system("cls");
+      if (s1.Add_info(list, s1.creat_stu()) == -1)
+        cout << "\t\tæ·»åŠ å¤±è´¥\n";
+      break;
+    case 2:
+    case 3:
+      system("cls");
+      s1.find_mod(list, n - 2);
+      break;
+    case 4:
+      system("cls");
+      s1.aver_jg_yx(list);
+      break;
+    case 5:
+      system("cls");
+      s1.All_aver_max_min(list);
+      break;
+    case 6:
+      system("cls");
+      s1.pm(list);
+      break;
+    case 7:
+      system("cls");
+      s1.deleteStu(list);
+      break;
+    case 8:
+      system("cls");
+      s1.show(list);
+      break;
+    default:
+      system("cls");
+      cout << "\t\tè¾“å…¥é”™è¯¯ï¼";
     }
-    
-    Write_File(list);
-	getchar();
-    return 0;
+    getchar();
+  }
+
+  Write_File(list);
+  getchar();
+  return 0;
 }
